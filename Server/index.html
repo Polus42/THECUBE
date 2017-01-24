@@ -1,0 +1,29 @@
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script>
+  var move;
+  var clicked;
+  var socket = io(window.location.href);
+  socket.on('connectedtoserver', function (data) {
+    socket.emit('htmlclientconnected');
+    move = function(d){
+        socket.emit("playermoved", { delta: (d) });
+    }
+    clicked = function(){
+        socket.emit("playerclicked");
+    }
+  });
+////////////////////////////////////////////////////////////////////////////////////////////////////
+window.ondevicemotion = function(event) {
+  move(event.accelerationIncludingGravity.x);
+};
+////////////////////////////////////////////////////////////////////////////////////////////////////
+window.addEventListener('deviceorientation', function(event) {
+  orientation(event.alpha);
+});
+////////////////////////////////////////////////////////////////////////////////////////////////////
+</script>
+<html>
+<body id="demo" onclick="clicked()" style="font-size:40px">
+  AMAZING CONTROLLER
+</body>
+</html>
